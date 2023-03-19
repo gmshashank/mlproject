@@ -6,4 +6,8 @@ scikit-learn
 catboost
 xgboost
 dill
+pre-commit
+black
+mypy
+flake8
 # -e .
