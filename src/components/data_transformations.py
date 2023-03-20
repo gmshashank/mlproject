@@ -10,14 +10,20 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from src.exception import CustomException
-from src.logger import logging
-from src.utils import save_object
+from pathlib import Path  
+file = Path(__file__).resolve()  
+package_root_directory = file.parents[1]  
+print(package_root_directory)
+sys.path.append(str(package_root_directory))  
+
+from exception import CustomException
+from logger import logging
+from utils import save_object
 
 
 @dataclass
 class DataTransformationConfig:
-    preprocessing_obj_file_path = os.path.join("artefacts", "pre_processor.pkl")
+    preprocessing_obj_file_path = os.path.join("artifacts", "pre_processor.pkl")
 
 
 class DataTransformation:

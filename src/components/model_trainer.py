@@ -15,15 +15,21 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from xgboost import XGBRegressor
 
-from src.exception import CustomException
-from src.logger import logging
+from pathlib import Path  
+file = Path(__file__).resolve()  
+package_root_directory = file.parents[1]  
+print(package_root_directory)
+sys.path.append(str(package_root_directory))  
 
-from src.utils import save_object, evaluate_model
+from exception import CustomException
+from logger import logging
+
+from utils import save_object, evaluate_model
 
 
 @dataclass
 class ModelTrainerConfig:
-    trained_model_file_path = os.path.join("artefacts", "model.pkl")
+    trained_model_file_path = os.path.join("artifacts", "model.pkl")
     best_model_score_threshold = 0.6
 
 
@@ -41,22 +47,51 @@ class ModelTrainer:
                 test_array[:, -1],
             )
             models = {
-                "AdaBosst": AdaBoostRegressor(),
-                "CatBoosting": CatBoostRegressor(),
-                "Decision Tree": DecisionTreeRegressor(),
-                "Gradient Bossting": GradientBoostingRegressor(),
-                "K-Neighbors": KNeighborsRegressor(),
                 "Linear Regression": LinearRegression(),
+                "K-Neighbors": KNeighborsRegressor(),
+                "Decision Tree": DecisionTreeRegressor(),
+                "Gradient Boosting": GradientBoostingRegressor(),
                 "Random Forest": RandomForestRegressor(),
+                "AdaBoost": AdaBoostRegressor(),
+                "CatBoosting": CatBoostRegressor(),
                 "XGBoost": XGBRegressor(),
             }
-
+            params={
+              "Linear Regression":{},
+              "K-Neighbors":{
+                "n_neighbors":[5,7,9,11],
+              },
+              "Decision Tree":{
+                "criterion":["squared_error","absolute_error","poisson"]
+              },
+              "Gradient Boosting":{
+                "learning_rate":[0.5,0.1,0.05,0.01,0.005,0.001],
+                "n_estimators":[8,16,32,64,128,256],
+              },
+              "Random Forest":{
+                "n_estimators":[8,16,32,64,128,256],
+              },
+              "AdaBoost":{
+                "learning_rate":[0.5,0.1,0.05,0.01,0.005,0.001],
+                "n_estimators":[8,16,32,64,128,256],
+              },
+              "CatBoosting":{
+                "learning_rate":[0.5,0.1,0.05,0.01,0.005,0.001],
+                "n_estimators":[8,16,32,64,128,256],
+              },
+              "XGBoost":{
+                "learning_rate":[0.1,0.05,0.01,0.001],
+                "n_estimators":[8,16,32,64,128,256],
+              }
+            }
+            
             model_report: dict = evaluate_model(
                 X_train=X_train,
                 y_train=y_train,
                 X_test=X_test,
                 y_test=y_test,
                 models=models,
+                params=params,
             )
 
             # get the best model score from dict
