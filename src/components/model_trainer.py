@@ -15,11 +15,12 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from xgboost import XGBRegressor
 
-from pathlib import Path  
-file = Path(__file__).resolve()  
-package_root_directory = file.parents[1]  
+from pathlib import Path
+
+file = Path(__file__).resolve()
+package_root_directory = file.parents[1]
 print(package_root_directory)
-sys.path.append(str(package_root_directory))  
+sys.path.append(str(package_root_directory))
 
 from exception import CustomException
 from logger import logging
@@ -56,35 +57,35 @@ class ModelTrainer:
                 "CatBoosting": CatBoostRegressor(),
                 "XGBoost": XGBRegressor(),
             }
-            params={
-              "Linear Regression":{},
-              "K-Neighbors":{
-                "n_neighbors":[5,7,9,11],
-              },
-              "Decision Tree":{
-                "criterion":["squared_error","absolute_error","poisson"]
-              },
-              "Gradient Boosting":{
-                "learning_rate":[0.5,0.1,0.05,0.01,0.005,0.001],
-                "n_estimators":[8,16,32,64,128,256],
-              },
-              "Random Forest":{
-                "n_estimators":[8,16,32,64,128,256],
-              },
-              "AdaBoost":{
-                "learning_rate":[0.5,0.1,0.05,0.01,0.005,0.001],
-                "n_estimators":[8,16,32,64,128,256],
-              },
-              "CatBoosting":{
-                "learning_rate":[0.5,0.1,0.05,0.01,0.005,0.001],
-                "n_estimators":[8,16,32,64,128,256],
-              },
-              "XGBoost":{
-                "learning_rate":[0.1,0.05,0.01,0.001],
-                "n_estimators":[8,16,32,64,128,256],
-              }
+            params = {
+                "Linear Regression": {},
+                "K-Neighbors": {
+                    "n_neighbors": [5, 7, 9, 11],
+                },
+                "Decision Tree": {
+                    "criterion": ["squared_error", "absolute_error", "poisson"]
+                },
+                "Gradient Boosting": {
+                    "learning_rate": [0.5, 0.1, 0.05, 0.01, 0.005, 0.001],
+                    "n_estimators": [8, 16, 32, 64, 128, 256],
+                },
+                "Random Forest": {
+                    "n_estimators": [8, 16, 32, 64, 128, 256],
+                },
+                "AdaBoost": {
+                    "learning_rate": [0.5, 0.1, 0.05, 0.01, 0.005, 0.001],
+                    "n_estimators": [8, 16, 32, 64, 128, 256],
+                },
+                "CatBoosting": {
+                    "learning_rate": [0.5, 0.1, 0.05, 0.01, 0.005, 0.001],
+                    "n_estimators": [8, 16, 32, 64, 128, 256],
+                },
+                "XGBoost": {
+                    "learning_rate": [0.1, 0.05, 0.01, 0.001],
+                    "n_estimators": [8, 16, 32, 64, 128, 256],
+                },
             }
-            
+
             model_report: dict = evaluate_model(
                 X_train=X_train,
                 y_train=y_train,
@@ -93,6 +94,8 @@ class ModelTrainer:
                 models=models,
                 params=params,
             )
+            # print All models scores
+            print(model_report)
 
             # get the best model score from dict
             best_model_score = max(sorted(model_report.values()))
