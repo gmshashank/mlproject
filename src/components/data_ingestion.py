@@ -5,16 +5,18 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
-from pathlib import Path  
-file = Path(__file__).resolve()  
-package_root_directory = file.parents[1]  
-print(package_root_directory)
-sys.path.append(str(package_root_directory))  
+from pathlib import Path
+
+file = Path(__file__).resolve()
+package_root_directory = file.parents[1]
+# print(package_root_directory)
+sys.path.append(str(package_root_directory))
 
 from exception import CustomException
 from logger import logging
 from components.data_transformations import DataTransformation, DataTransformationConfig
 from components.model_trainer import ModelTrainerConfig, ModelTrainer
+
 
 @dataclass
 class DataIngestionConfig:
@@ -64,8 +66,10 @@ if __name__ == "__main__":
     train_data, test_data = data_ingestion_obj.initiate_data_ingestion()
 
     data_transformation = DataTransformation()
-    train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data, test_data)
-    
-    model_trainer=ModelTrainer()
-    model_r2_score=model_trainer.initiate_model_trainer(train_arr,test_arr)
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(
+        train_data, test_data
+    )
+
+    model_trainer = ModelTrainer()
+    model_r2_score = model_trainer.initiate_model_trainer(train_arr, test_arr)
     print(model_r2_score)

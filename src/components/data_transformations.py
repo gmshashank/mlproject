@@ -10,11 +10,12 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from pathlib import Path  
-file = Path(__file__).resolve()  
-package_root_directory = file.parents[1]  
-print(package_root_directory)
-sys.path.append(str(package_root_directory))  
+from pathlib import Path
+
+file = Path(__file__).resolve()
+package_root_directory = file.parents[1]
+# print(package_root_directory)
+sys.path.append(str(package_root_directory))
 
 from exception import CustomException
 from logger import logging
